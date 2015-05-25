@@ -48,15 +48,15 @@ public class HttpFileServer {
 			protected void initChannel(SocketChannel ch)
 				throws Exception {
 			    ch.pipeline().addLast("http-decoder",
-				    new HttpRequestDecoder());
+				    new HttpRequestDecoder()); // 请求消息解码器
 			    ch.pipeline().addLast("http-aggregator",
-				    new HttpObjectAggregator(65536));
+				    new HttpObjectAggregator(65536));// 目的是将多个消息转换为单一的request或者response对象
 			    ch.pipeline().addLast("http-encoder",
-				    new HttpResponseEncoder());
+				    new HttpResponseEncoder());//响应解码器
 			    ch.pipeline().addLast("http-chunked",
-				    new ChunkedWriteHandler());
+				    new ChunkedWriteHandler());//目的是支持异步大文件传输（）
 			    ch.pipeline().addLast("fileServerHandler",
-				    new HttpFileServerHandler(url));
+				    new HttpFileServerHandler(url));// 业务逻辑
 			}
 		    });
 	    ChannelFuture future = b.bind("192.168.1.102", port).sync();
