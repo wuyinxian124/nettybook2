@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/jdk1.7.0_67"/>
+	<classpathentry kind="lib" path="lib/protobuf-java-2.5.0.jar"/>
+	<classpathentry kind="lib" path="lib/jboss-marshalling-1.3.0.CR9.jar"/>
+	<classpathentry kind="lib" path="lib/jboss-marshalling-serial-1.3.0.CR9.jar"/>
+	<classpathentry kind="lib" path="lib/bcel.jar"/>
+	<classpathentry kind="lib" path="lib/jibx-bind.jar"/>
+	<classpathentry kind="lib" path="lib/jibx-run.jar"/>
+	<classpathentry kind="lib" path="lib/jibx-schema.jar"/>
+	<classpathentry kind="lib" path="lib/jibx-tools.jar"/>
+	<classpathentry kind="lib" path="lib/log4j.jar"/>
+	<classpathentry kind="lib" path="lib/xpp3.jar"/>
+	<classpathentry kind="lib" path="lib/ant.jar"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/netty-5.0.0"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>

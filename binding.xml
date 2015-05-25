@@ -1,0 +1,29 @@
+<binding xmlns:ns1="http://phei.com/netty/protocol/http/xml/pojo" name="binding" package="com.phei.netty.protocol.http.xml.pojo">
+  <namespace uri="http://phei.com/netty/protocol/http/xml/pojo" default="elements"/>
+  <mapping abstract="true" type-name="ns1:order" class="com.phei.netty.protocol.http.xml.pojo.Order">
+    <value style="attribute" name="orderNumber" field="orderNumber"/>
+    <structure field="customer" usage="optional" name="customer">
+      <value style="attribute" name="customerNumber" field="customerNumber"/>
+      <value style="element" name="firstName" field="firstName" usage="optional"/>
+      <value style="element" name="lastName" field="lastName" usage="optional"/>
+      <collection field="middleNames" usage="optional" create-type="java.util.ArrayList">
+        <value name="middleName" type="java.lang.String"/>
+      </collection>
+    </structure>
+    <structure map-as="ns1:address" field="billTo" usage="optional" name="billTo"/>
+    <value style="element" name="shipping" field="shipping" usage="optional"/>
+    <structure map-as="ns1:address" field="shipTo" usage="optional" name="shipTo"/>
+    <value style="attribute" name="total" field="total" usage="optional"/>
+  </mapping>
+  <mapping class="com.phei.netty.protocol.http.xml.pojo.Order" name="order">
+    <structure map-as="ns1:order"/>
+  </mapping>
+  <mapping abstract="true" type-name="ns1:address" class="com.phei.netty.protocol.http.xml.pojo.Address">
+    <value style="element" name="street1" field="street1" usage="optional"/>
+    <value style="element" name="street2" field="street2" usage="optional"/>
+    <value style="element" name="city" field="city" usage="optional"/>
+    <value style="element" name="state" field="state" usage="optional"/>
+    <value style="element" name="postCode" field="postCode" usage="optional"/>
+    <value style="element" name="country" field="country" usage="optional"/>
+  </mapping>
+</binding>

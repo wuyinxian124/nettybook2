@@ -1,0 +1,13 @@
+keytool -genkey -alias securechat -keysize 2048 -validity 365 -keyalg RSA -dname "CN=localhost" -keypass sNetty -storepass sNetty -keystore sChat.jks
+
+
+keytool -genkey -alias smcc -keysize 2048 -validity 365 -keyalg RSA -dname "CN=localhost" -keypass cNetty -storepass cNetty -keystore cChat.jks
+
+keytool -export -alias securechat -keystore sChat.jks -storepass sNetty -file sChat.cer
+
+keytool -import -trustcacerts -alias securechat -file sChat.cer -storepass cNetty -keystore cChat.jks 
+
+keytool -export -alias smcc -keystore cChat.jks -storepass cNetty -file cChat.cer
+
+keytool -import -trustcacerts -alias smcc -file cChat.cer -storepass sNetty -keystore sChat.jks  
+

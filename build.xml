@@ -1,0 +1,105 @@
+<?xml version="1.0"?>
+
+<!-- ===================================================================
+
+Ant build file for JiBX data binding code to schema starter example.
+
+=================================================================== -->
+<project basedir="." default="help">
+  <available file="/lib/jibx-bind.jar" property="jibx-home" value=""/>
+  <property environment="env"/>
+  <condition property="jibx-home" value="${env.JIBX_HOME}">
+    <and>
+      <not>
+        <isset property="jibx-home"/>
+      </not>
+      <available file="${env.JIBX_HOME}/lib"/>
+    </and>
+  </condition>
+  <!-- End of jibx-home location setting block. -->
+  
+  <!-- make sure required jars are present -->
+  <condition property="runtime-jars-found">
+    <available file="${jibx-home}/lib/jibx-run.jar"/>
+  </condition>
+  <condition property="binding-jars-found">
+    <and>
+      <available file="${jibx-home}/lib/bcel.jar"/>
+      <available file="${jibx-home}/lib/jibx-bind.jar"/>
+      <available file="${jibx-home}/lib/jibx-run.jar"/>
+    </and>
+  </condition>
+  <available property="extras-jar-found" file="${jibx-home}/lib/jibx-extras.jar"/>
+  
+  <!-- set classpath for compiling and running application with JiBX -->
+  <path id="classpath">
+    <fileset dir="${jibx-home}/lib" includes="*.jar"/>
+    <pathelement location="bin"/>
+  </path>
+  
+  <!-- make sure runtime jars are present -->
+  <target name="check-runtime">
+  	<echo message="-------------->${env.JIBX_HOME}"></echo>
+    <fail unless="jibx-home">JiBX home directory not found - define JIBX_HOME system property or set path directly in build.xml file.</fail>
+    <fail unless="runtime-jars-found">Required JiBX runtime jar jibx-run.jar was not found in JiBX home lib directory (${jibx-home}/lib)</fail>
+  </target>
+  
+  <!-- make sure extras jars are present -->
+  <target name="check-extras" depends="check-runtime">
+    <fail unless="extras-jar-found">Required JiBX extras jar jibx-extras.jar was not found in JiBX home lib directory (${jibx-home}/lib)</fail>
+  </target>
+  
+  <!-- make sure binding jars are present -->
+  <target name="check-binding" depends="check-runtime">
+    <fail unless="binding-jars-found">Required JiBX binding jar jibx-bind.jar or bcel.jar was not found in JiBX home lib directory (${jibx-home}/lib)</fail>
+  </target>
+  
+  <!-- clean compiled class files and output file -->
+  <target name="clean">
+    <delete quiet="true" dir="${basedir}/bin/com/phei/netty/protocol/http/xml/pojo"/>
+    <delete quiet="true" file="${basedir}/binding.xml"/>
+    <delete quiet="true">
+      <fileset dir="${basedir}" includes="out*.xml"/>
+      <fileset dir="${basedir}" includes="*.xsd"/>
+    </delete>
+  </target>
+  
+  <!-- compile the classes -->
+  <target name="compile" depends="clean,check-runtime">
+    <echo message="Compiling Java source code"/>
+    <delete quiet="true" dir="${basedir}/bin/com/phei/netty/protocol/http/xml/pojo"/>
+    <mkdir dir="${basedir}/bin"/>
+    <javac srcdir="${basedir}/src/com/phei/netty/protocol/http/xml/pojo" destdir="${basedir}/bin" debug="on">
+      <classpath refid="classpath"/>
+    </javac>
+  </target>
+  
+  <!-- generate default binding and schema -->
+  <target name="bindgen">
+    <echo message="Running BindGen tool"/>
+    <java classpathref="classpath" fork= "true" failonerror="true" classname="org.jibx.binding.generator.BindGen">
+      <arg value="-s"/>
+      <arg value="${basedir}/src/com/phei/netty/protocol/http/xml/pojo"/>
+      <arg value="com.phei.netty.protocol.http.xml.pojo.Order"/>
+    </java>  
+  </target>
+  
+  <!-- bind as a separate step -->
+  <target name="bind" depends="check-binding">
+    <echo message="Running JiBX binding compiler"/>
+    <taskdef name="bind" classname="org.jibx.binding.ant.CompileTask">
+      <classpath>
+        <fileset dir="${jibx-home}/lib" includes="*.jar"/>
+      </classpath>
+    </taskdef>
+    <bind binding="${basedir}/binding.xml">
+      <classpath refid="classpath"/>
+    </bind>  
+  </target>
+  <!-- compile, generate default, compile binding, run test -->
+  <target name="full" depends="compile,bindgen,bind"/>
+	<target name="help">
+	  <echo message="Targets are:" /> 
+	  <echo message="http://sourceforge.net/projects/jibx"/> 
+      </target>
+</project>
