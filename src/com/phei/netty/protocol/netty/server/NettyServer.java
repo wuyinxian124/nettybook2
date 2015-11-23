@@ -31,6 +31,8 @@ import java.io.IOException;
 import com.phei.netty.protocol.netty.NettyConstant;
 import com.phei.netty.protocol.netty.codec.NettyMessageDecoder;
 import com.phei.netty.protocol.netty.codec.NettyMessageEncoder;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 /**
  * @author Lilinfeng
@@ -38,6 +40,8 @@ import com.phei.netty.protocol.netty.codec.NettyMessageEncoder;
  * @version 1.0
  */
 public class NettyServer {
+
+	private static final Log LOG = LogFactory.getLog(NettyServer.class);
 
     public void bind() throws Exception {
 	// 配置服务端的NIO线程组
@@ -64,7 +68,7 @@ public class NettyServer {
 
 	// 绑定端口，同步等待成功
 	b.bind(NettyConstant.REMOTEIP, NettyConstant.PORT).sync();
-	System.out.println("Netty server start ok : "
+	LOG.info("Netty server start ok : "
 		+ (NettyConstant.REMOTEIP + " : " + NettyConstant.PORT));
     }
 
