@@ -27,6 +27,8 @@ import java.util.concurrent.ConcurrentHashMap;
 import com.phei.netty.protocol.netty.MessageType;
 import com.phei.netty.protocol.netty.struct.Header;
 import com.phei.netty.protocol.netty.struct.NettyMessage;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 /**
  * @author Lilinfeng
@@ -34,6 +36,8 @@ import com.phei.netty.protocol.netty.struct.NettyMessage;
  * @version 1.0
  */
 public class LoginAuthRespHandler extends ChannelHandlerAdapter {
+
+	private final static Log LOG = LogFactory.getLog(LoginAuthRespHandler.class);
 
     private Map<String, Boolean> nodeCheck = new ConcurrentHashMap<String, Boolean>();
     private String[] whitekList = { "127.0.0.1", "192.168.1.104" };
@@ -74,7 +78,7 @@ public class LoginAuthRespHandler extends ChannelHandlerAdapter {
 		if (isOK)
 		    nodeCheck.put(nodeIndex, true);
 	    }
-	    System.out.println("The login response is : " + loginResp
+	    LOG.info("The login response is : " + loginResp
 		    + " body [" + loginResp.getBody() + "]");
 	    ctx.writeAndFlush(loginResp);
 	} else {

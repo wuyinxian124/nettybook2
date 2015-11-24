@@ -21,6 +21,8 @@ import io.netty.channel.ChannelHandlerContext;
 import com.phei.netty.protocol.netty.MessageType;
 import com.phei.netty.protocol.netty.struct.Header;
 import com.phei.netty.protocol.netty.struct.NettyMessage;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 /**
  * @author Lilinfeng
@@ -28,6 +30,10 @@ import com.phei.netty.protocol.netty.struct.NettyMessage;
  * @version 1.0
  */
 public class HeartBeatRespHandler extends ChannelHandlerAdapter {
+
+	private static final Log LOG = LogFactory.getLog(HeartBeatRespHandler.class);
+
+
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg)
 	    throws Exception {
@@ -36,11 +42,10 @@ public class HeartBeatRespHandler extends ChannelHandlerAdapter {
 	if (message.getHeader() != null
 		&& message.getHeader().getType() == MessageType.HEARTBEAT_REQ
 			.value()) {
-	    System.out.println("Receive client heart beat message : ---> "
+	    LOG.info("Receive client heart beat message : ---> "
 		    + message);
 	    NettyMessage heartBeat = buildHeatBeat();
-	    System.out
-		    .println("Send heart beat response message to client : ---> "
+	    LOG.info("Send heart beat response message to client : ---> "
 			    + heartBeat);
 	    ctx.writeAndFlush(heartBeat);
 	} else
